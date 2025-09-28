@@ -7,10 +7,10 @@
   
 # Group Information
 
-| Member Name        | Student ID  | Email                             | 
-|--------------------|-------------|-----------------------------------|
-| Hoang Trung Dung   | 20235488    | Dung.HT235488@sis.hust.edu.vn     |                          
-| Nguyen Tat Hung    | 20235500    | Hung.NT235500@sis.hust.edu.vn     |                          
-| Yesemin Besel      | 20250036S   | Busel.Y250036S@sis.hust.edu.vn    |                          
+| Member Name        | Student ID  | Email                             | Role                 |
+|--------------------|-------------|-----------------------------------|----------------------|
+| Hoang Trung Dung   | 20235488    | Dung.HT235488@sis.hust.edu.vn     | Team leader          |               
+| Nguyen Tat Hung    | 20235500    | Hung.NT235500@sis.hust.edu.vn     | Member               |              
+| Yesemin Besel      | 20250036S   | Busel.Y250036S@sis.hust.edu.vn    | Member               |                                       
 
 
