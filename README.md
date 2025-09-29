@@ -13,4 +13,5 @@
 | Nguyen Tat Hung    | 20235500    | Hung.NT235500@sis.hust.edu.vn     | Member               |              
 | Yesemin Besel      | 20250036S   | Busel.Y250036S@sis.hust.edu.vn    | Member               |                                       
 
+Due to one of our former members had a course registration issue and can no longer join us. The group information will be updated soon. 
 
