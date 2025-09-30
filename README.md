@@ -7,10 +7,11 @@
   
 # Group Information
 
-| Member Name        | Student ID  | Email                             | Role                 |
-|--------------------|-------------|-----------------------------------|----------------------|
-| Hoang Trung Dung   | 20235488    | Dung.HT235488@sis.hust.edu.vn     | Team leader          |               
-| Nguyen Tat Hung    | 20235500    | Hung.NT235500@sis.hust.edu.vn     | Member               |              
+| Member Name              | Student ID  | Email                             | Role                 |
+|--------------------------|-------------|-----------------------------------|----------------------|
+| Hoang Trung Dung         | 20235488    | Dung.HT235488@sis.hust.edu.vn     | Team leader          |               
+| Nguyen Tat Hung          | 20235500    | Hung.NT235500@sis.hust.edu.vn     | Member               |      
+| Nguyen Ngoc Tuan Anh     | 202416658   | Anh.NNT2416658@sis.hust.edu.vn    | Member               |      
                                       
 
 
