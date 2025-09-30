@@ -38,7 +38,10 @@ public class TaskManager {
     private void addTask() {
         System.out.print("Enter task description: ");
         String description = scanner.nextLine();
-        tasks.add(new Task(description));
+        System.out.print("Enter priority (1: High, 2: Medium, 3: Low): ");
+        int priority = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        tasks.add(new Task(description, priority));
         System.out.println("Task added.");
     }
 
@@ -49,7 +52,7 @@ public class TaskManager {
             System.out.println("\nTasks:");
             for (int i = 0; i < tasks.size(); i++) {
                 Task task = tasks.get(i);
-                System.out.println((i + 1) + ". " + task.getDescription());
+                System.out.println((i + 1) + ". " + task.getDescription() + " (Priority: " + task.getPriority() + ")");
             }
         }
     }
