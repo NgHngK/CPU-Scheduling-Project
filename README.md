@@ -15,7 +15,7 @@
 
 # CPU Scheduling Project – File Guide
 
-This project is a simple Java console program that shows how three CPU scheduling algorithms work:
+This project is a Java console program that shows how three CPU scheduling algorithms work:
 - FCFS (First Come First Serve)
 - SJN (Shortest Job Next / Shortest Job First)
 - RR (Round Robin)
