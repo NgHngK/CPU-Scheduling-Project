@@ -15,104 +15,191 @@
 
 # CPU Scheduling Algorithms (FCFS, SJN, RR)
 
-This project is a Java console program that simulates three classic CPU scheduling algorithms:
+This is a simple Java console program that simulates three CPU scheduling algorithms:
 
-- **FCFS** – First-Come-First-Serve  
-- **SJN** – Shortest Job Next (non-preemptive SJF)  
-- **RR** – Round Robin (with time quantum)
+- **FCFS** – First Come First Serve  
+- **SJN** – Shortest Job Next (also called Shortest Job First, non-preemptive)  
+- **RR** – Round Robin (uses a time quantum)
 
-It uses basic Object-Oriented Programming (OOP) concepts such as **encapsulation, inheritance, polymorphism, and abstraction**.
+The code is written using basic Object-Oriented Programming (OOP) ideas:
+- We have classes for processes and schedulers.
+- We use inheritance (a parent scheduler class and child classes for each algorithm).
 
 ---
 
-## Class Overview
+## What each class does
 
 ### 1. `Process`
-Represents a single process in the system.
 
-**Purpose:**
+**What it represents:**
 
-- Stores basic information of a process:
-  - `pid` – process ID (e.g. `P1`, `P2`)
-  - `arrivalTime` – when the process arrives in the ready queue
-  - `burstTime` – how long the process needs the CPU
-- Uses **encapsulation**:
-  - Fields are declared `private`
-  - Values are accessed through public getter methods
+A single process in the system.
+
+**What it stores:**
+
+- `pid` – the name/ID of the process (for example: `P1`, `P2`, `P3`)
+- `arrivalTime` – the time when the process arrives in the ready queue
+- `burstTime` – how long (how many time units) the process needs the CPU
+
+**Why it is written this way:**
+
+- The fields are `private`.
+- There are `public` getter methods to read the values.
+- This is called *encapsulation*: the data is inside the class, and other classes use methods to access it.
 
 ---
 
 ### 2. `ProcessStats`
-Represents the result of scheduling for one process.
 
-**Purpose:**
+**What it represents:**
 
-- Stores all important timing results after scheduling:
-  - `startTime` – time when the process first starts running on the CPU
-  - `completionTime` – time when the process finishes
-  - `waitingTime` – total time spent waiting in the ready queue
-  - `turnaroundTime` – total time from arrival to completion
-- Makes it easy to pass around and print per-process results in a table.
+The result for one process after we run a scheduling algorithm.
+
+**What it stores:**
+
+- `startTime` – the time when the process first starts running on the CPU
+- `completionTime` – the time when the process finishes
+- `waitingTime` – how long the process waited in the ready queue
+- `turnaroundTime` – total time from arrival to completion
+
+**Why we use it:**
+
+- It is easier to keep all these values together for each process.
+- We can pass a list of `ProcessStats` around and print them in a table.
 
 ---
 
-### 3. `CPUScheduler` (abstract)
-Abstract base class for all scheduling algorithms.
+### 3. `CPUScheduler` (abstract class)
 
-**Purpose:**
+**What it represents:**
 
-- Defines the **common interface** for all CPU schedulers:
-  - Abstract method:  
-    - `schedule(List<Process> processes)` → returns a list of `ProcessStats`
-- Provides shared helper methods:
+A general “CPU scheduler”.
+
+You do not use this class directly.  
+Other classes extend it and provide the real algorithm.
+
+**What it contains:**
+
+- An abstract method:
+  - `schedule(List<Process> processes)`  
+    This method must be implemented by each algorithm class.  
+    It returns a `List<ProcessStats>` for all processes.
+- Helper methods to compute averages:
   - `computeAverageWaitingTime(...)`
   - `computeAverageTurnaroundTime(...)`
-- Shows **abstraction and inheritance**:
-  - You cannot create `CPUScheduler` directly.
-  - Concrete algorithms extend this class and implement their own scheduling logic.
+
+**Why it is useful:**
+
+- It gives a common structure for all schedulers.
+- All scheduler classes share the same method name `schedule(...)`.
+- This shows *abstraction* and *inheritance*: a general idea (CPUScheduler) and specific versions (FCFS, SJN, RR).
 
 ---
 
 ### 4. `FCFSScheduler`
-Implements the **First-Come-First-Serve (FCFS)** scheduling algorithm.
 
-**Purpose:**
+**What it represents:**
+
+The **First Come First Serve** scheduling algorithm.
+
+**How it works:**
+
+- Processes are sorted by arrival time.
+- The process that arrives first is executed first.
+- When one process finishes, the next one in order runs.
+
+**What it does:**
 
 - Extends `CPUScheduler`.
-- Runs processes in the order of their **arrival time**.
-- For each process, calculates:
-  - Start time
-  - Completion time
-  - Waiting time
-  - Turnaround time
-- Simple “queue-like” behavior: the process that arrives first runs first.
+- For each process, it calculates:
+  - start time
+  - completion time
+  - waiting time
+  - turnaround time
+- Returns a `List<ProcessStats>` with these values.
 
 ---
 
 ### 5. `SJNScheduler`
-Implements the **Shortest Job Next (SJN / non-preemptive SJF)** algorithm.
 
-**Purpose:**
+**What it represents:**
+
+The **Shortest Job Next** algorithm (also called **Shortest Job First**, non-preemptive).
+
+**How it works (simple idea):**
+
+- At the current time, look at all processes that have already arrived.
+- Among those, pick the process with the **smallest burst time**.
+- Run that process until it finishes.
+- Repeat until all processes are done.
+
+**What it does:**
 
 - Extends `CPUScheduler`.
-- At any moment, chooses the process (from those that have already arrived) with the **smallest burst time**.
-- Non-preemptive:
-  - Once a process starts running, it runs until it finishes.
-- Produces `ProcessStats` for each process, similar to FCFS.
+- Chooses the shortest job among the processes that are ready.
+- Calculates start time, completion time, waiting time, and turnaround time.
+- Returns them as a `List<ProcessStats>`.
 
 ---
 
 ### 6. `RRScheduler`
-Implements the **Round Robin (RR)** scheduling algorithm.
 
-**Purpose:**
+**What it represents:**
+
+The **Round Robin** scheduling algorithm.
+
+**Key idea:**
+
+- Each process gets a small time slice called a **time quantum** (for example 2 or 4 time units).
+- Processes are placed in a queue.
+- The first process runs for at most `quantum` time units.
+  - If it is finished, it leaves the queue.
+  - If it is not finished, it goes to the back of the queue.
+- This repeats in a round, so every process gets CPU time fairly.
+
+**What it does:**
 
 - Extends `CPUScheduler`.
-- Uses a **time quantum** (fixed time slice).
-- Cycles through processes:
-  - Each ready process gets up to `quantum` units of CPU time.
-  - If a process is not finished after its time slice, it goes back to the end of the ready q
+- Has a `quantum` value (given in the constructor).
+- Simulates Round Robin using a simple ready queue.
+- Calculates start time (first time it gets CPU), completion time, waiting time, and turnaround time for each process.
+- Returns the results as a `List<ProcessStats>`.
 
-                                      
+---
+
+### 7. `Main`
+
+**What it represents:**
+
+The main class with the `public static void main(String[] args)` method.
+
+**What it does:**
+
+1. Asks the user to input:
+   - number of processes
+   - for each process:
+     - PID
+     - arrival time
+     - burst time
+   - time quantum for Round Robin
+
+2. Creates a list of `Process` objects from the user input.
+
+3. Creates scheduler objects:
+   - `FCFSScheduler`
+   - `SJNScheduler`
+   - `RRScheduler`
+
+4. Calls `schedule(...)` for each scheduler and prints:
+   - A table with:
+     - ProcessID  
+     - ArrivalTime  
+     - BurstTime  
+     - StartTime  
+     - CompletionTime  
+     - WaitingTime  
+     - TurnaroundTime  
+   - The average waiting time
+   - The average turnaround time
 
 
