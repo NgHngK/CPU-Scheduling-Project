@@ -61,7 +61,9 @@ public class Main {
 
         double avgWt = scheduler.computeAverageWaitingTime(stats);
         double avgTat = scheduler.computeAverageTurnaroundTime(stats);
+        double cpuUtil = scheduler.computeCpuUtilization(stats);
         System.out.printf("Average Waiting Time: %.2f%n", avgWt);
         System.out.printf("Average Turnaround Time: %.2f%n", avgTat);
+        System.out.printf("CPU Utilization: %.2f%n", cpuUtil);
     }
 }
