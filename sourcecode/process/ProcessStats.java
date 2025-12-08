@@ -1,3 +1,4 @@
+package process;
 public class ProcessStats {
     private final Process process;
     private final int startTime;

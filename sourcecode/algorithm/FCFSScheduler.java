@@ -1,7 +1,14 @@
+package algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
+import process.Process;
+import process.ProcessStats;
+
 public class FCFSScheduler extends CPUScheduler {
+	
+	private final Process IDLE_PROCESS = new Process("IDLE", 0, 1);
+	
     @Override
     public List<ProcessStats> schedule(List<Process> processes) {
         List<Process> list = new ArrayList<Process>();
@@ -27,11 +34,21 @@ public class FCFSScheduler extends CPUScheduler {
             Process p = list.get(i);
 
             if (currentTime < p.getArrivalTime()) {
+            	
+            	int idleStart = currentTime;
+            	int idleCompletion = p.getArrivalTime();
+            	
+            	if (idleCompletion > idleStart) {
+            		ProcessStats idleStats = new ProcessStats(IDLE_PROCESS, idleStart, idleCompletion);
+            		result.add(idleStats);
+            	}
+            	
                 currentTime = p.getArrivalTime();
             }
 
             int start = currentTime;
             int completion = start + p.getBurstTime();
+            
             ProcessStats stats = new ProcessStats(p, start, completion);
             result.add(stats);
 

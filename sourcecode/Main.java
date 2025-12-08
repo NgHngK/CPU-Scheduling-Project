@@ -2,6 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import algorithm.CPUScheduler;
+import algorithm.FCFSScheduler;
+import algorithm.RRScheduler;
+import algorithm.SJNScheduler;
+import process.Process;
+import process.ProcessStats;
+
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);

@@ -1,3 +1,5 @@
+package process;
+
 public class Process {
     private final String pid;      // Process ID
     private final int arrivalTime;

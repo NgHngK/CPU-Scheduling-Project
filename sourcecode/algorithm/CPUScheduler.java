@@ -1,7 +1,12 @@
+package algorithm;
 import java.util.List;
+
+import process.Process;
+import process.ProcessStats;
 
 public abstract class CPUScheduler {
     public abstract List<ProcessStats> schedule(List<Process> processes);
+    
     public double computeAverageWaitingTime(List<ProcessStats> stats) {
         double sum = 0;
 
@@ -32,5 +37,22 @@ public abstract class CPUScheduler {
         else {
             return sum / stats.size();
         }
+    }
+    
+    public double computeCpuUtilization(List<ProcessStats> stats) {
+        double totalRunningTime = 0;
+        double endTime = 0;
+
+        for (ProcessStats ps: stats) {
+            Process p = ps.getProcess();
+            totalRunningTime += p.getBurstTime();
+            endTime = Math.max(endTime, ps.getCompletionTime());
+        }
+
+        if (endTime == 0) {
+            return 0.0;
+        }
+
+        return (totalRunningTime / endTime) * 100;
     }
 }
