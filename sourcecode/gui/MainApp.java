@@ -37,7 +37,6 @@ public class MainApp extends Application {
 	Label cpuUtilizationResult = new Label();
 	DecimalFormat df = new DecimalFormat("#.##");
 	Random random = new Random();
-	
 
 	@SuppressWarnings("unchecked")
 	@Override
