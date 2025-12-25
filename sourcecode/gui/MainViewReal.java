@@ -1,5 +1,7 @@
 package gui;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -70,6 +72,19 @@ public class MainViewReal {
     	TableColumn<Process, String> pidColumn = new TableColumn<>("Process ID"); //pid
         TableColumn<Process, Number> arrColumn  = new TableColumn<>("Arrival"); //at
         TableColumn<Process, Number> burColumn  = new TableColumn<>("Burst"); //bt
+
+        //this apparently makes the data shows up, no clue what the factory thing is
+    	pidColumn.setCellValueFactory(c ->
+    		new SimpleStringProperty(c.getValue().getPid())
+    	);
+
+    	arrColumn.setCellValueFactory(c ->
+    		new SimpleIntegerProperty(c.getValue().getArrivalTime())
+    	);
+
+    	burColumn.setCellValueFactory(c ->
+    		new SimpleIntegerProperty(c.getValue().getBurstTime())
+    	);
         
         tableView.getColumns().addAll(pidColumn, arrColumn, burColumn);
         
@@ -92,6 +107,26 @@ public class MainViewReal {
         TableColumn<ProcessStats, Number> burColumn2  = new TableColumn<>("Burst"); //bt
         TableColumn<ProcessStats, Number> wColumn  = new TableColumn<>("Waiting"); //wt
         TableColumn<ProcessStats, Number> tatColumn = new TableColumn<>("Turnaround"); //tat
+
+        pidColumn2.setCellValueFactory(c ->
+    		new SimpleStringProperty(c.getValue().getProcess().getPid())
+    		);
+
+		arrColumn2.setCellValueFactory(c ->
+    		new SimpleIntegerProperty(c.getValue().getProcess().getArrivalTime())
+    		);
+
+		burColumn2.setCellValueFactory(c ->
+    		new SimpleIntegerProperty(c.getValue().getProcess().getBurstTime())
+    		);
+
+		wColumn.setCellValueFactory(c ->
+    		new SimpleIntegerProperty(c.getValue().getWaitingTime())
+    		);
+
+		tatColumn.setCellValueFactory(c ->
+    		new SimpleIntegerProperty(c.getValue().getTurnaroundTime())
+    		);
         
         tableView2.getColumns().addAll(pidColumn2, arrColumn2, burColumn2, wColumn, tatColumn);
         
