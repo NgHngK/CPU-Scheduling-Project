@@ -1,14 +1,14 @@
-package gui;
-
+import gui.Controller;
+import gui.View;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainAppTest extends Application {
+public class MainGUI extends Application {
 
     @Override
     public void start(Stage stage) {
-        MainViewReal view = new MainViewReal();
-        new MainControllerReal(view);
+        View view = new View();
+        new Controller(view);
         view.start(stage);
     }
 

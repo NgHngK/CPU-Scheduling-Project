@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import process.ProcessStats;
 import process.Process;
 
-public class MainViewReal {
+public class View {
 	public TableView<Process> tableView = new TableView<>(); //this is the processTable, naming is bad but it is legacy so what can i do about it :P
 	public TableView<ProcessStats> tableView2 = new TableView<>(); //likewise, this is the resultTable, but the naming is like that to begin with
 	

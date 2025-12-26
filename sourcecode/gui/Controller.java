@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
 
-import algorithm.CPUScheduler;
-import algorithm.FCFSScheduler;
-import algorithm.RRScheduler;
-import algorithm.SJNScheduler;
+import algorithms.CPUScheduler;
+import algorithms.FCFSScheduler;
+import algorithms.RRScheduler;
+import algorithms.SJNScheduler;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,8 +33,8 @@ import javafx.scene.paint.Color;
 import process.Process;
 import process.ProcessStats;
 
-public class MainControllerReal {
-	private final MainViewReal view;
+public class Controller {
+	private final View view;
 	private final DecimalFormat df = new DecimalFormat("#.##");
 	Random random = new Random();
 	
@@ -65,6 +65,14 @@ public class MainControllerReal {
         view.avgWTResult.setText(df.format(avgWT));
         view.avgTATResult.setText(df.format(avgTAT));
         view.cpuUtilizationResult.setText(df.format(cpuU) + "%");
+        
+        view.resultAvgWTLabel.setText(view.avgWTResult.getText());
+        view.resultAvgTATLabel.setText(view.avgTATResult.getText());
+        view.resultCpuULabel.setText(view.cpuUtilizationResult.getText());
+        
+        view.resultAvgWTLabel.setVisible(true);
+		view.resultAvgTATLabel.setVisible(true);
+		view.resultCpuULabel.setVisible(true);
     }
 	
 	private void runFCFS() {
@@ -82,16 +90,41 @@ public class MainControllerReal {
         a.showAndWait();
     }
 
-    private void runRR() {
-        if (view.quantum.getText().isEmpty()) {
-            error("Quantum time required");
-            return;
-        }
-
-        int q = Integer.parseInt(view.quantum.getText());
-        RRScheduler scheduler = new RRScheduler(q);
-        executeScheduler(scheduler, scheduler.schedule(view.dataList));
-    }
+//    private void runRR() {
+//        if (view.quantum.getText().isEmpty()) {
+//            error("Quantum time required");
+//            return;
+//        }
+//
+//        int q = Integer.parseInt(view.quantum.getText());
+//        RRScheduler scheduler = new RRScheduler(q);
+//        executeScheduler(scheduler, scheduler.schedule(view.dataList));
+//    }
+    
+    private void runRR() {    	
+    	view.dataList2.clear();
+		view.dataList3.clear();
+		
+		RRScheduler rrScheduler = new RRScheduler(Integer.parseInt(view.quantum.getText()));
+		view.dataList2.addAll(rrScheduler.schedule(view.dataList));
+		view.dataList3.addAll(rrScheduler.ganttList(view.dataList));
+		
+		double avgWT = rrScheduler.computeAverageWaitingTime(view.dataList2);
+		double avgTAT = rrScheduler.computeAverageTurnaroundTime(view.dataList2);
+		double cpuUtilization = rrScheduler.computeCpuUtilization(view.dataList2);
+		
+		view.avgWTResult.setText(df.format(avgWT));
+		view.avgTATResult.setText(df.format(avgTAT));
+		view.cpuUtilizationResult.setText(df.format(cpuUtilization) + "%");
+		
+		view.resultAvgWTLabel.setText(view.avgWTResult.getText());
+        view.resultAvgTATLabel.setText(view.avgTATResult.getText());
+        view.resultCpuULabel.setText(view.cpuUtilizationResult.getText());
+		
+		view.resultAvgWTLabel.setVisible(true);
+		view.resultAvgTATLabel.setVisible(true);
+		view.resultCpuULabel.setVisible(true);
+	}
     
     //END HELPTER SECTION FOR runSelectedAlgorithm()
 	
@@ -230,6 +263,7 @@ public class MainControllerReal {
     	dialog.showAndWait();
 	}
 	
+	@SuppressWarnings("static-access")
 	public void ganttChart(ObservableList<ProcessStats> dataList3, AnchorPane centerPane) {
 		
 		HashMap<String, Color> map = new HashMap<String, Color>();
@@ -334,7 +368,7 @@ public class MainControllerReal {
         view.menuButton.setOnAction(e -> ShowMenuDialog());
 	}
 	
-	public MainControllerReal(MainViewReal view) {
+	public Controller(View view) {
 		this.view = view;
 		bindActions();
 	}

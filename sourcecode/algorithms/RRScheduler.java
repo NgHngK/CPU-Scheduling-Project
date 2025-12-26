@@ -1,5 +1,5 @@
 
-package algorithm;
+package algorithms;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +83,8 @@ public class RRScheduler extends CPUScheduler {
 
             // Get first process in the queue
             int procIndex = readyQueue.remove(0);
-            Process p = list.get(procIndex);
+            @SuppressWarnings("unused")
+			Process p = list.get(procIndex);
 
             if (firstStart[procIndex] == -1) {
                 firstStart[procIndex] = currentTime; // first time it gets CPU
