@@ -5,13 +5,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class StackPaneRactangleWithText {
+public class GanttChartBlock {
 	private StackPane root = new StackPane();
 	private Rectangle rectangle = new Rectangle();
 	private Label label = new Label();
 	
 	
-	public StackPaneRactangleWithText(double width, double height, String text, Color color) {
+	public GanttChartBlock(double width, double height, String text, Color color) {
 		
 		this.label.setText(text);
 	

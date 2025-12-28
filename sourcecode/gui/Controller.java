@@ -311,11 +311,11 @@ public class Controller {
     		int b = random.nextInt(255 - 100 + 1) + 100;
     		int c = random.nextInt(255 - 100 + 1) + 100;
     		map.putIfAbsent(text , Color.rgb(a, b, c));
-    		StackPaneRactangleWithText psRectangle = new StackPaneRactangleWithText(width, 50, text, map.get(text)); // process pane with text in center
+    		GanttChartBlock psRectangle = new GanttChartBlock(width, 50, text, map.get(text)); // process pane with text in center
     		
     		
     		if (psRectangle.getText() == "IDLE") {
-    			psRectangle = new StackPaneRactangleWithText(width, 50, text, Color.rgb(255, 255, 255));   // White for IDLE pc
+    			psRectangle = new GanttChartBlock(width, 50, text, Color.rgb(255, 255, 255));   // White for IDLE pc
     		}
    
     		hbox2.getChildren().add(psRectangle.getStackPane());
