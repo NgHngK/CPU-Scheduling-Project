@@ -55,9 +55,13 @@ public class View {
     public Label avgTATResult = new Label(); //avgTATValue
     public Label cpuUtilizationResult = new Label(); //cpuUtilValue
     
-    public Label resultAvgWTLabel = new Label(); //why do we have 2 pairs of labels??
-	public Label resultAvgTATLabel = new Label(); //oh so these guys are for actual display??
-	public Label resultCpuULabel = new Label();
+    public Label resultAvgWTLabel = new Label();
+    public Label resultAvgTATLabel = new Label();
+    public Label resultCpuULabel = new Label();
+	
+	public Label avgWTLabel = new Label("AVG Waiting Time");
+	public Label avgTATLabel= new Label("AVG Turnaround Time");
+	public Label cpuULabel = new Label("CPU Utilization");
     
     // wallahi we're cooked    
     public ObservableList<Process> dataList = FXCollections.observableArrayList(); //this is processData, why are we using ObservableList?
@@ -177,6 +181,18 @@ public class View {
     	VBox avgWTBox = new VBox(10);
     	VBox avgTATBox = new VBox(10);
     	VBox cpuUtilizationBox = new VBox(10); 
+    	
+    	avgWTBox.getChildren().addAll(avgWTLabel, resultAvgWTLabel);
+    	avgTATBox.getChildren().addAll(avgTATLabel, resultAvgTATLabel);
+    	cpuUtilizationBox.getChildren().addAll(cpuULabel, resultCpuULabel);
+    	
+    	avgWTBox.setAlignment(Pos.CENTER);
+    	avgTATBox.setAlignment(Pos.CENTER);
+    	cpuUtilizationBox.setAlignment(Pos.CENTER);
+    	
+    	resultAvgWTLabel.setVisible(false);
+    	resultAvgTATLabel.setVisible(false);
+    	resultCpuULabel.setVisible(false);
     	
     	HBox hbox1 = new HBox(170);
     	hbox1.getChildren().addAll(tableView2, avgWTBox, avgTATBox, cpuUtilizationBox);
