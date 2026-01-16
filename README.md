@@ -119,3 +119,9 @@ This file contains the `main` method and starts the program.
   - The average waiting time and average turnaround time.
 
 ---
+
+To view our demo, run "MainGUI.java".
+For more detail about our system design, please have look at the UML use case diagram and class diagram in the folder "design".
+
+# Acknowledgement
+This project is built by a group of students at Hanoi University of Science and Technology, Vietnam. Thanks for the contribution from Hoang Trung Dung, Nguyen Tat Hung, Nguyen Ngoc Tuan Anh. These authors contributed equally. The order is arbitrary.
