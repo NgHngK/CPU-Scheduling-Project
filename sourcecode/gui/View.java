@@ -7,7 +7,6 @@ import java.util.Random;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -36,56 +35,59 @@ import process.ProcessStats;
 import process.Process;
 
 public class View {
-	public TableView<Process> tableView = new TableView<>(); //this is the processTable, naming is bad but it is legacy so what can i do about it :P
-	public TableView<ProcessStats> tableView2 = new TableView<>(); //likewise, this is the resultTable, but the naming is like that to begin with
+	private TableView<Process> tableView = new TableView<>(); //this is the processTable, naming is bad but it is legacy so what can i do about it :P
+	private TableView<ProcessStats> tableView2 = new TableView<>(); //likewise, this is the resultTable, but the naming is like that to begin with
 	
-	public Button addBtn = new Button("Add process"); //this is the addProcessBtn
-	public Button clearButton = new Button("Clear all processes"); //clearBtn
-	public Button submitButton = new Button("Submit"); //submitBtn
-	public Button exitButton = new Button("EXIT");
-	public Button menuButton = new Button("Menu");
+	protected Button addBtn = new Button("Add process"); //this is the addProcessBtn
+	protected Button clearButton = new Button("Clear all processes"); //clearBtn
+	protected Button submitButton = new Button("Submit"); //submitBtn
+	protected Button exitButton = new Button("EXIT");
+	protected Button menuButton = new Button("Menu");
 	
 	// algorithm menu setup
-	public MenuItem fcfs = new MenuItem("First Come First Serve");
-	public MenuItem sjn = new MenuItem("Shortest Job Next");
-	public MenuItem rr = new MenuItem("Round Robin");
+	protected MenuItem fcfs = new MenuItem("First Come First Serve");
+	protected MenuItem sjn = new MenuItem("Shortest Job Next");
+	protected MenuItem rr = new MenuItem("Round Robin");
 	
-	public MenuButton algoMenuButton = new MenuButton("Algorithms", null, fcfs, sjn, rr); //this is the algoMenu button
+	protected MenuButton algoMenuButton = new MenuButton("Algorithms", null, fcfs, sjn, rr); //this is the algoMenu button
 	
 	//gantt chart
-	public AnchorPane centerPane = new AnchorPane(); //this is ganttPane
+	private AnchorPane centerPane = new AnchorPane(); //this is ganttPane
 	
 	// explain algos buttons	
-	public Button fcfsButton = new Button("Explain FCFS");
-	public Button sjnButton = new Button("Explain SJN");
-	public Button rrButton = new Button("Explain RR");
+	private Button fcfsButton = new Button("Explain FCFS");
+	private Button sjnButton = new Button("Explain SJN");
+	private Button rrButton = new Button("Explain RR");
 	
 	// quantum field for robin hood
-	public TextField quantum = new TextField(); //quantumField
+	protected TextField quantum = new TextField(); //quantumField
 
 	// cool stats 
-    public Label avgWTResult = new Label(); //avgWTValue
-    public Label avgTATResult = new Label(); //avgTATValue
-    public Label cpuUtilizationResult = new Label(); //cpuUtilValue
+	private Label avgWTResult = new Label(); //avgWTValue
+	private Label avgTATResult = new Label(); //avgTATValue
+	private Label cpuUtilizationResult = new Label(); //cpuUtilValue
     
-    public Label resultAvgWTLabel = new Label();
-    public Label resultAvgTATLabel = new Label();
-    public Label resultCpuULabel = new Label();
+	private Label resultAvgWTLabel = new Label();
+	private Label resultAvgTATLabel = new Label();
+	private Label resultCpuULabel = new Label();
 	
-	public Label avgWTLabel = new Label("AVG Waiting Time");
-	public Label avgTATLabel= new Label("AVG Turnaround Time");
-	public Label cpuULabel = new Label("CPU Utilization");
-    
-    // wallahi we're cooked    
-    public ObservableList<Process> dataList = FXCollections.observableArrayList(); //this is processData, why are we using ObservableList?
-    public ObservableList<ProcessStats> dataList2 = FXCollections.observableArrayList(); // contain processes that are not IDLE
-    public ObservableList<ProcessStats> dataList3 = FXCollections.observableArrayList(); // for IDLE processes
+	private Label avgWTLabel = new Label("AVG Waiting Time");
+	private Label avgTATLabel= new Label("AVG Turnaround Time");
+	private Label cpuULabel = new Label("CPU Utilization");
 
-    Random random = new Random();
+    private Random random = new Random();
+    
+    protected void bindProcessTable(ObservableList<Process> dataList) {
+        tableView.setItems(dataList);
+    }
+
+    protected void bindResultTable(ObservableList<ProcessStats> dataList2) {
+        tableView2.setItems(dataList2);
+    }
     
     @SuppressWarnings("unchecked")
 	private void buildProcessTable() {
-    	tableView.setItems(dataList); //this table displays what is in processData (aka dataList)
+//    	tableView.setItems(dataList); //this table displays what is in processData (aka dataList)
     	
     	//set up table
     	TableColumn<Process, String> pidColumn = new TableColumn<>("Process ID"); //pid
@@ -118,7 +120,7 @@ public class View {
     
     @SuppressWarnings("unchecked")
 	private void buildResultTable() {
-    	tableView2.setItems(dataList2); //displays not IDLE processes
+//    	tableView2.setItems(dataList2); //displays not IDLE processes
     	
     	//set up table
     	TableColumn<ProcessStats, String> pidColumn2 = new TableColumn<>("Process ID"); //pid
@@ -161,7 +163,6 @@ public class View {
     }
     
   //dude optimize this wtf is this shit lmao
-  	@SuppressWarnings("unused")
 	protected void showMenuDialog() {
   		Dialog<String> dialog = new Dialog<String>();
   		dialog.setTitle("MENU");
@@ -169,7 +170,7 @@ public class View {
   		int widthBtn = 210;
   		int heigtBtn = 60;
   		
-  		Button fcfsButton = new Button("Explain FCFS");
+//  		Button fcfsButton = new Button("Explain FCFS");
   		fcfsButton.setOnAction(e -> {
   			Dialog<TextArea> d = new Dialog<TextArea>();
   			TextArea t = new TextArea("This is the simplest scheduling algorithm where processes are executed in the order they arrive in the ready queue. It does not consider process priority or burst time, which can lead to convoy effect, where long processes delay short ones.");
@@ -181,7 +182,7 @@ public class View {
   			d.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
   			d.showAndWait();
   			});
-  		Button sjnButton = new Button("Explain SJN");
+//  		Button sjnButton = new Button("Explain SJN");
   		sjnButton.setOnAction(e -> {
   			Dialog<TextArea> d = new Dialog<TextArea>();
   			TextArea t = new TextArea("SJN, also known as Shortest Job First (SJF), selects the process with the shortest burst time to execute next. This minimizes average waiting time but requires knowing the burst time of each process in advance, which is often impractical in real-world scenarios.");
@@ -193,7 +194,7 @@ public class View {
   			d.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
   			d.showAndWait();
   			});
-  		Button rrButton = new Button("Explain RR");
+//  		Button rrButton = new Button("Explain RR");
   		rrButton.setOnAction(e -> {
   			Dialog<TextArea> d = new Dialog<TextArea>();
   			TextArea t = new TextArea("RR allocates each process a fixed time slice (quantum) in a cyclic order. Once a process’s quantum expires, it is moved to the back of the queue, ensuring fairness. It is simple and ensures all processes get executed but can cause frequent context switching, adding overhead.");
@@ -222,7 +223,7 @@ public class View {
         a.showAndWait();
     }
   	
-  	public Optional<Process> showAddProcessDialog(int nextPid) {
+  	protected Optional<Process> showAddProcessDialog(int nextPid) {
   	    Dialog<Process> dialog = new Dialog<>();
   	    dialog.setTitle("Add new process");
 
@@ -252,17 +253,14 @@ public class View {
   	    return dialog.showAndWait();
   	}
 
-  	public void resetUI() {
-  	    dataList.clear(); //clear processData
-		dataList2.clear(); //clear resultData
-		dataList3.clear();
+  	protected void resetUI() {
 		resultAvgWTLabel.setVisible(false);
 		resultAvgTATLabel.setVisible(false);
 		resultCpuULabel.setVisible(false);
   		centerPane.getChildren().clear(); //clear ganttPane
   	}
   	
-  	public void showStats(double avgWT, double avgTAT, double cpuU, DecimalFormat df) {
+  	protected void showStats(double avgWT, double avgTAT, double cpuU, DecimalFormat df) {
   	    avgWTResult.setText(df.format(avgWT));
   	    avgTATResult.setText(df.format(avgTAT));
   	    cpuUtilizationResult.setText(df.format(cpuU) + "%");
@@ -276,7 +274,7 @@ public class View {
   	    resultCpuULabel.setVisible(true);
   	}
   	
-  	public boolean confirmExit() {
+  	protected boolean confirmExit() {
   	    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
   	    alert.setTitle("Confirm exit!");
   	    alert.setHeaderText("Are you sure you want to exit?");
@@ -288,7 +286,7 @@ public class View {
   	}
   	
   	@SuppressWarnings("static-access")
-	public void ganttChart(ObservableList<ProcessStats> dataList3) {
+  	protected void ganttChart(ObservableList<ProcessStats> dataList3) {
 		
 		HashMap<String, Color> map = new HashMap<String, Color>();
 
