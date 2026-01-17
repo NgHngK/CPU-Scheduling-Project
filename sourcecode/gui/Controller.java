@@ -4,62 +4,68 @@ package gui;
 //resultData = dataList2 (or dataList3 idk lmao)
 
 import java.text.DecimalFormat;
-import java.util.Random;
 
 import algorithms.CPUScheduler;
 import algorithms.FCFSScheduler;
 import algorithms.RRScheduler;
 import algorithms.SJNScheduler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import process.Process;
 import process.ProcessStats;
 
 public class Controller {
 	private final View view;
 	private final DecimalFormat df = new DecimalFormat("#.##");
-	Random random = new Random();
+	
+    // wallahi we're cooked    
+	private ObservableList<Process> dataList = FXCollections.observableArrayList(); //this is processData, why are we using ObservableList?
+	private ObservableList<ProcessStats> dataList2 = FXCollections.observableArrayList(); // contain processes that are not IDLE
+	private ObservableList<ProcessStats> dataList3 = FXCollections.observableArrayList(); // for IDLE processes
 	
 	//HELPER FUNCTIONS FOR runSelectedAlgorithm() 
 	
 	//this function basically takes runFCFS() and runRR() and runSJN() and generalize them
 	//uh maybe double check this shit if it doesnt work
 	private void executeScheduler(CPUScheduler scheduler, Iterable<ProcessStats> stats) {
-        view.dataList2.clear();
-        view.dataList3.clear();
+        dataList2.clear();
+        dataList3.clear();
         
         stats.forEach(ps -> {
-        	view.dataList3.add(ps);
+        	dataList3.add(ps);
             if (!ps.getProcess().getPid().equals("IDLE")) {
-                view.dataList2.add(ps);
+                dataList2.add(ps);
             }
         });
 
-        double avgWT = scheduler.computeAverageWaitingTime(view.dataList2);
-        double avgTAT = scheduler.computeAverageTurnaroundTime(view.dataList2);
-        double cpuUtilization  = scheduler.computeCpuUtilization(view.dataList2);
+        double avgWT = scheduler.computeAverageWaitingTime(dataList2);
+        double avgTAT = scheduler.computeAverageTurnaroundTime(dataList2);
+        double cpuUtilization  = scheduler.computeCpuUtilization(dataList2);
 
         view.showStats(avgWT, avgTAT, cpuUtilization, df);
     }
 	
 	private void runFCFS() {
         FCFSScheduler scheduler = new FCFSScheduler();
-        executeScheduler(scheduler, scheduler.schedule(view.dataList));
+        executeScheduler(scheduler, scheduler.schedule(dataList));
     }
 
     private void runSJN() {
         SJNScheduler scheduler = new SJNScheduler();
-        executeScheduler(scheduler, scheduler.schedule(view.dataList));
+        executeScheduler(scheduler, scheduler.schedule(dataList));
     }
 
     private void runRR() {    	
-    	view.dataList2.clear();
-		view.dataList3.clear();
+    	dataList2.clear();
+		dataList3.clear();
 		
 		RRScheduler rrScheduler = new RRScheduler(Integer.parseInt(view.quantum.getText()));
-		view.dataList2.addAll(rrScheduler.schedule(view.dataList));
-		view.dataList3.addAll(rrScheduler.ganttList(view.dataList));
+		dataList2.addAll(rrScheduler.schedule(dataList));
+		dataList3.addAll(rrScheduler.ganttList(dataList));
 		
-		double avgWT = rrScheduler.computeAverageWaitingTime(view.dataList2);
-		double avgTAT = rrScheduler.computeAverageTurnaroundTime(view.dataList2);
-		double cpuUtilization = rrScheduler.computeCpuUtilization(view.dataList2);
+		double avgWT = rrScheduler.computeAverageWaitingTime(dataList2);
+		double avgTAT = rrScheduler.computeAverageTurnaroundTime(dataList2);
+		double cpuUtilization = rrScheduler.computeCpuUtilization(dataList2);
 
 		view.showStats(avgWT, avgTAT, cpuUtilization, df);
 	}
@@ -67,7 +73,7 @@ public class Controller {
     //END HELPTER SECTION FOR runSelectedAlgorithm()
 	
 	private void runSelectedAlgorithm() {
-		if (view.dataList.isEmpty()) { //if processData empty
+		if (dataList.isEmpty()) { //if processData empty
             view.error("No processes to schedule");
             return;
         }
@@ -100,15 +106,20 @@ public class Controller {
         });
         
         //clear button        
-        view.clearButton.setOnAction(e -> view.resetUI());
+        view.clearButton.setOnAction(e -> {
+            dataList.clear();
+            dataList2.clear();
+            dataList3.clear();
+            view.resetUI();
+        });
         
         view.submitButton.setOnAction(e -> {
         	runSelectedAlgorithm();
-        	view.ganttChart(view.dataList3);
+        	view.ganttChart(dataList3);
         });
         
         view.addBtn.setOnAction(e -> {
-            view.showAddProcessDialog(view.dataList.size() + 1).ifPresent(p -> view.dataList.add(p));
+            view.showAddProcessDialog(dataList.size() + 1).ifPresent(p -> dataList.add(p));
         });
         
         view.exitButton.setOnAction(e -> {
@@ -122,6 +133,10 @@ public class Controller {
 	
 	public Controller(View view) {
 		this.view = view;
+		
+		view.bindProcessTable(dataList);
+	    view.bindResultTable(dataList2);
+		
 		bindActions();
 	}
 }

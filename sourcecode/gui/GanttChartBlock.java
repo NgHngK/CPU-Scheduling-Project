@@ -10,7 +10,6 @@ public class GanttChartBlock {
 	private Rectangle rectangle = new Rectangle();
 	private Label label = new Label();
 	
-	
 	public GanttChartBlock(double width, double height, String text, Color color) {
 		
 		this.label.setText(text);
